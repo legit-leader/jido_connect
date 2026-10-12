@@ -51,6 +51,24 @@ defmodule Jido.Connect.Calcom.NormalizerTest do
              })
   end
 
+  test "normalizes REST v2 booking start and end" do
+    assert {:ok, %Booking{start: "2026-06-01T10:00:00.000Z", end: "2026-06-01T10:30:00.000Z"}} =
+             Normalizer.booking(%{
+               "uid" => "booking-1",
+               "start" => "2026-06-01T10:00:00.000Z",
+               "end" => "2026-06-01T10:30:00.000Z"
+             })
+  end
+
+  test "normalizes webhook booking startTime and endTime" do
+    assert {:ok, %Booking{start: "2026-06-01T10:00:00Z", end: "2026-06-01T10:30:00Z"}} =
+             Normalizer.booking(%{
+               "uid" => "booking-1",
+               "startTime" => "2026-06-01T10:00:00Z",
+               "endTime" => "2026-06-01T10:30:00Z"
+             })
+  end
+
   test "normalizes booking with cancellation and rescheduling metadata" do
     assert {:ok,
             %Booking{
